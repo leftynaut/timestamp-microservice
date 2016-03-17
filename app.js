@@ -19,7 +19,7 @@ app.get('/:date?', function(req, res) {
         if (!isNaN(date)) {  // if date is a number...
             var unix = parseInt(date);  // then convert to an integer and set to var unix
         } else {
-            var unix = (new Date(date).getTime() / 1000) - 28800  // converts natural language to unix in ms, converts to seconds, then subtracts 8 hrs
+            var unix = (new Date(date).getTime() / 1000)  // converts natural language to unix in ms and converts to seconds
         }
 
         var options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };  // sets proper formatting for natural, as defined by the sample app
