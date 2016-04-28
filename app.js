@@ -29,6 +29,7 @@ app.get('/:date?', function(req, res) {
     }
 });
 
-app.listen(process.env.PORT, function() {
-    console.log("Timestamp server running");
+var port = process.env.PORT || 3000;
+var server = app.listen(port, function() {
+   console.log('Sever listening on port ' + port);
 });
