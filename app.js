@@ -2,10 +2,15 @@
 
 var express = require('express')
 
+var path = require('path');
+var favicon = require('serve-favicon');
+
 var app = express();
 
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.set('views', __dirname + '/templates');
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.get('/:date?', function(req, res) {
     var path = req.path;
