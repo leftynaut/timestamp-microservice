@@ -1,40 +1,37 @@
 'use strict';
 
-var express = require('express')
+const express = require('express')
+const path = require('path');
+const favicon = require('serve-favicon');
 
-var path = require('path');
-var favicon = require('serve-favicon');
-
-var app = express();
+const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.get('/:date?', function(req, res) {
-    var local = req.get('host');
+app.get('/:date?', (req, res) => {
     var path = req.path;
     res.locals.path = path;
-    var date = req.params.date;
-    if (date === undefined) {
+    let date = req.params.date;
+    if (!date) {
         res.render('index', {
-            host: local
+            host: req.get('host')
         });
     } else {
-        if (!isNaN(date)) { // if date is a number...
-            var unix = parseInt(date); // then convert to an integer and set to var unix
-        } else {
-            var unix = (new Date(date).getTime() / 1000) // converts natural language to unix in ms and converts to seconds
-        }
+        // if date isn't a number - convert natural to unix in ms and then
+        // convert to seconds - else, convert to int.
+        let unix = isNaN(date) ? new Date(date).getTime() / 1000 : parseInt(date);
 
-        var options = {
+        const options = {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
             timeZone: 'UTC'
-        }; // sets proper formatting for natural, as defined by the sample app
-        var natural = new Date(unix * 1000).toLocaleString('en-US', options);
+        };
+        // sets proper formatting for natural, as defined by the sample app
+        let natural = new Date(unix * 1000).toLocaleString('en-US', options);
         if (natural === "Invalid Date") {
             natural = null;
         }
@@ -45,7 +42,7 @@ app.get('/:date?', function(req, res) {
     }
 });
 
-var port = process.env.PORT || 3000;
-var server = app.listen(port, function() {
-    console.log('Sever listening on port ' + port);
+const port = process.env.PORT || 3000;
+const server = app.listen(port, function() {
+    console.log('Server listening on port ' + port);
 });
