@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express')
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -12,17 +10,16 @@ app.set('views', __dirname + '/views');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.get('/:date?', (req, res) => {
-    var path = req.path;
+    const host = req.get('host');
+    const path = req.path;
     res.locals.path = path;
-    let date = req.params.date;
+    const date = req.params.date;
     if (!date) {
-        res.render('index', {
-            host: req.get('host')
-        });
+        res.render('index', { host });
     } else {
         // if date isn't a number - convert natural to unix in ms and then
         // convert to seconds - else, convert to int.
-        let unix = isNaN(date) ? new Date(date).getTime() / 1000 : parseInt(date);
+        const unix = isNaN(date) ? new Date(date).getTime() / 1000 : parseInt(date);
 
         const options = {
             year: 'numeric',
@@ -35,10 +32,7 @@ app.get('/:date?', (req, res) => {
         if (natural === "Invalid Date") {
             natural = null;
         }
-        res.json({
-            unix: unix,
-            natural: natural
-        });
+        res.json({unix, natural});
     }
 });
 
