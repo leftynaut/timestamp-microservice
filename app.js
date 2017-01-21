@@ -37,6 +37,6 @@ app.get('/:date?', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, function() {
+app.listen(port, () => {
     console.log('Server listening on port ' + port);
 });
